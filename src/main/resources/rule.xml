@@ -59,6 +59,21 @@
 			<algorithm>partbymonth</algorithm>
 		</rule>
 	</tableRule>
+	
+	<tableRule name="sharding-rang-year">
+		<rule>
+			<columns>create_time</columns>
+			<algorithm>rang-year</algorithm>
+		</rule>
+	</tableRule>
+	
+	<tableRule name="sharding-by-year">
+		<rule>
+			<columns>create_time</columns>
+			<algorithm>partbyYear</algorithm>
+		</rule>
+	</tableRule>
+	
 	<tableRule name="latest-month-calldate">
 		<rule>
 			<columns>calldate</columns>
@@ -92,6 +107,7 @@
 
 	<function name="crc32slot"
 			  class="io.mycat.route.function.PartitionByCRC32PreSlot">
+		<!--<property name="count">2</property>&lt;!&ndash; 要分片的数据库节点数量，必须指定，否则没法分片 &ndash;&gt;-->
 	</function>
 	<function name="hash-int"
 		class="io.mycat.route.function.PartitionByFileMap">
@@ -118,6 +134,18 @@
 		class="io.mycat.route.function.PartitionByMonth">
 		<property name="dateFormat">yyyy-MM-dd</property>
 		<property name="sBeginDate">2015-01-01</property>
+	</function>
+	
+	<function name="partbyYear"
+		class="io.mycat.route.function.PartitionByDate">
+		<property name="dateFormat">yyyy-MM-dd</property>
+		<property name="sBeginDate">2014-01-01</property>
+		<property name="sPartionDay">365</property>
+	</function>
+	
+	<function name="rang-year" class="io.mycat.route.function.PartitionByYearRange">
+        	<property name="mapFile">partition-range-year.txt</property>
+                <property name="hasMultiNode">false</property>
 	</function>
 	
 	<function name="rang-mod" class="io.mycat.route.function.PartitionByRangeMod">
